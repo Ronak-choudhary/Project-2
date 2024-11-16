@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Summarize</title>
+</head>
+<body>
+    <div class="h-[100vh] flex justify-center items-cente flex-col">
+        <div class="text-5xl font-bold h-[6vh] bg-violet-300 w-full flex justify-center items-center">
+            <h1>Summarizer</h1>
+        </div>
+        <div class="h-[92vh] w-full justify-center items-center flex gap-6 gap">
+            <textarea row="14" id="inputtext" placeholder="Add" class="h-[60vh] w-[45vh] border-2 border-black p-2"></textarea>
+            <button class="py-2 px-4 bg-blue-400 text-4xl font-bold rounded-md" onclick="getdata()">Get</button>
+            <textarea row="14" id="outputtext" placeholder="Wait for the result" class="h-[60vh] w-[45vh] border-2 border-black p-2"></textarea>
+        </div>
+    </div>
+    
+    <script>
+        function getdata() {
+            var text=document.getElementById("inputtext").value
+            query({"inputs":[text] }).then((response) => {
+            document.getElementById("outputtext").value=JSON.stringify(response);
+        });
+        }
+        async function query(data) {
+	        const response = await fetch(
+		        "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+		        {
+			        headers: {
+				        Authorization: "Bearer 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",
+			        },
+			        method: "POST",
+			        body: JSON.stringify(data),
+		        }
+	        );
+	        const result = await response.json();
+	        return result;
+        }
+      
+    </script>
+    
+</body>
+</html>
